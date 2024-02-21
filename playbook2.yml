@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars:
-    JSON_DATA: '{"hosts": ["root@172.31.93.220"]}'
+    #JSON_DATA: '{"hosts": ["root@172.31.93.220"]}'
     name: "{{ file_name }}"
   tasks:
     - name: Create temp file
