@@ -2,11 +2,11 @@
 - name: Create temp file on nodes
   hosts: all
   become: true
-  vars:
+ # vars:
     #JSON_DATA: '{"hosts": ["root@172.31.93.220"]}'
-    name: "{{ file_name }}"
+   # name: "{{ file_name }}"
   tasks:
     - name: Create temp file
       ansible.builtin.file:
-        path: "/tmp/{{ file_name }}"
+        path: /tmp/saanu
         state: touch
