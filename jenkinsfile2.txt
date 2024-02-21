@@ -12,9 +12,12 @@ pipeline {
                 script {
                     def jsonData = readJSON text: params.JSON_DATA
                     def hosts = jsonData.hosts.collect { it }
-                    def inventoryPath = "${WORKSPACE}/inventory"
-                    writeFile file: inventoryPath, text: "[nodes]\n" + hosts.join('\n')
-                    sh "ansible-playbook -i ${inventoryPath} --extra-vars 'file_name=${params.FILE_PATH}' /var/lib/jenkins/workspace/playbook2.yml"
+                    def inventoryContent = "[nodes]\n" + hosts.join('\n')
+                    def inventoryFile = checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/srikar0610/multibranch.git']]])
+                    writeFile file: 'inv', text: inventoryContent
+
+                    def ansiblePlaybookCmd = "ansible-playbook -i inv --extra-vars 'file_name=${params.FILE_PATH}' playbook2.yml"
+                    sh ansiblePlaybookCmd
                 }
             }
         }
