@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'JSON_DATA', defaultValue: '{"hosts": ["root@172.31.93.220"]}', description: 'Enter JSON data containing list of IP addresses')
+        string(name: 'FILE_PATH', defaultValue: 'srilaxmi.txt', description: 'Enter the path where the temp file should be created')
+    }
+
+    stages {
+        stage('Execute Ansible Playbook') {
+            steps {
+                script {
+                    def jsonData = readJSON text: params.JSON_DATA
+                    def hosts = jsonData.hosts.collect { it }
+                    def inventoryContent = "[nodes]\n" + hosts.join('\n')
+                    def inventoryFile = checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/srikar0610/multibranch.git']]])
+                    writeFile file: 'inv', text: inventoryContent
+
+                    def ansiblePlaybookCmd = "ansible-playbook -i inv --extra-vars 'file_name=${params.FILE_PATH}' playbook3.yml"
+                    sh ansiblePlaybookCmd
+                }
+            }
+        }
+    }
+}
