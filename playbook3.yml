@@ -1,0 +1,11 @@
+---
+- name: Create temp file on nodes
+  hosts: all
+  become: true
+  vars:
+    name: "{{ file_name }}"
+  tasks:
+    - name: Create temp file
+      ansible.builtin.file:
+        path: "/tmp/{{ file_name }}"
+        state: touch
