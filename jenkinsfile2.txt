@@ -16,7 +16,7 @@ pipeline {
                     def inventoryFile = checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/srikar0610/multibranch.git']]])
                     writeFile file: 'inv', text: inventoryContent
 
-                    def ansiblePlaybookCmd = "ansible-playbook -i inv --extra-vars 'file_name=${params.FILE_PATH}' playbook2.yml"
+                    def ansiblePlaybookCmd = "ansible-playbook -i inv --extra-vars 'file_name=${params.FILE_PATH}' playbook3.yml"
                     sh ansiblePlaybookCmd
                 }
             }
