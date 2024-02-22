@@ -7,7 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Execute Ansible-Playbook') {
+        stage('Execute Ansible_Playbook for multibranch') {
             steps {
                 script {
                     def jsonData = readJSON text: params.JSON_DATA
