@@ -7,7 +7,7 @@ pipeline {
     }
 
     stages {
-        stage('Execute Ansible Playbook') {
+        stage('Execute AnsiblePlaybook') {
             steps {
                 script {
                     def jsonData = readJSON text: params.JSON_DATA
